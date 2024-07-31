@@ -36,6 +36,7 @@ const ThreadCard = ({
     comments = [],
     isComment,
 }: Props) => {
+
     return (
         <article className={`flex w-full flex-col rounded-xl ${isComment ? 'px-0 xs:px-7' : 'bg-dark-2 p-7'} `}>
             <div className="fleex items-start justify-between">
@@ -60,17 +61,14 @@ const ThreadCard = ({
                         <div className={`${isComment && 'mb-10'} mt-5 flex flex-col gap-3`}>
                             <div className="flex gap-3.5">
                                 <Image src="/assets/heart-gray.svg" alt="heart" width={24} height={24} className="cursor-pointer object-contain" />
+                                
                                 <Link href={`/thread/${id}`}>
                                     <Image src="/assets/reply.svg" alt="reply" width={24} height={24} className="cursor-pointer object-contain" />
                                 </Link>
                                 <Image src="/assets/repost.svg" alt="repost" width={24} height={24} className="cursor-pointer object-contain" />
                                 <Image src="/assets/share.svg" alt="share" width={24} height={24} className="cursor-pointer object-contain" />
                             </div>
-                            {isComment && comments.length > 0 && (
-                                <Link href={`/thread/${id}`}>
-                                    <p className="mt-1 text-subtle-medium text-gray-1">{comments.length} replies</p>
-                                </Link>
-                            )}
+
                         </div>
                     </div>
                 </div>
@@ -93,6 +91,27 @@ const ThreadCard = ({
                     </Link>
                 )
             }
+            {!isComment && comments.length > 0 && (
+
+                <div className="flex flex-row items-center gap-2 mt-1">
+                    <div className='flex items-center'>
+                        {comments.slice(-2).map((comment, index) => (
+                            <Image
+                                key={index}
+                                src={comment.author.image}
+                                alt={`user_${index}`}
+                                width={23}
+                                height={23}
+                                className={`${index !== 0 && "-ml-2"} rounded-full object-cover`}
+                            />
+                        ))}
+                    </div>
+
+                    <Link href={`/thread/${id}`}>
+                        <p className="mt-1 text-subtle-medium text-gray-1 hover:underline">{comments.length} replies</p>
+                    </Link>
+                </div>
+            )}
         </article>
     )
 }
